@@ -3,6 +3,7 @@ const { chromium } = require("playwright");
 const shops = [
   {
     vendor: "Microsoft",
+    hasSchema:false,
     url: "https://www.xbox.com/es-es/configure/8WJ714N3RBTL",
     checkStock: async ({ page }) => {
       const content = await page.textContent(
@@ -11,6 +12,15 @@ const shops = [
       return  content.includes("Finalizar la compra") === true;
     },
   },
+  {
+    vendor: 'Fnac',
+    hasSchema: true,
+    url: 'https://www.fnac.es/Samsung-Galaxy-A34-5G-6-6-256GB-Negro-Telefono-movil-Smartphone/a9999335',
+    checkStock: async ({ page }) => {
+      const notAvailable = await page.$$('.f-buyBox-availabilityStatus-unavailable')
+      return notAvailable.length === 0
+    }
+  }
 ];
 
  (async () => {
